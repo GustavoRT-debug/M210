@@ -1,21 +1,29 @@
 import streamlit as st
 from programacao_linear import pLinear, verify_viability
 
-st.title("Calculadora Simplex")
+st.title(
+    "Simplex Solver Resolva problemas de programação linear com 2, 3 ou 4 variáveis usando o método Simplex Tableau. Inclui análise de sensibilidade e preços-sombra."
+)
 st.sidebar.title("Entrada de Dados")
 if "previous_psombras" not in st.session_state:
     st.session_state.previous_psombras = []  # Inicializa como lista vazia
 
-#Arredondamento de valores decimais
+
+# Arredondamento de valores decimais
 def validate_decimal(value, key):
     if value is not None:
         rounded_value = round(value, 4)
         return rounded_value
     return value
 
-#Entrada de Dados
-num_variaveis = st.sidebar.number_input("Número de variáveis", min_value=1, step=1, key="num_variaveis")
-num_restricoes = st.sidebar.number_input("Número de restrições", min_value=1, step=1, key="num_restricoes")
+
+# Entrada de Dados
+num_variaveis = st.sidebar.number_input(
+    "Número de variáveis", min_value=1, step=1, key="num_variaveis"
+)
+num_restricoes = st.sidebar.number_input(
+    "Número de restrições", min_value=1, step=1, key="num_restricoes"
+)
 
 st.sidebar.subheader("Coeficientes da F.O.")
 coeficientes_fo = []
@@ -33,7 +41,9 @@ for i in range(int(num_restricoes)):
     restricao = []
     for j in range(int(num_variaveis)):
         coef = validate_decimal(
-            st.sidebar.number_input(f"Coeficiente de X{j+1} (Restrição {i+1})", key=f"coef_{i}_{j}"),
+            st.sidebar.number_input(
+                f"Coeficiente de X{j+1} (Restrição {i+1})", key=f"coef_{i}_{j}"
+            ),
             key=f"coef_{i}_{j}",
         )
         restricao.append(coef)
@@ -41,12 +51,14 @@ for i in range(int(num_restricoes)):
         st.sidebar.number_input(f"Limite (Restrição {i+1})", key=f"limite_{i}"),
         key=f"limite_{i}",
     )
-    sinal = st.sidebar.selectbox(f"Sinal (Restrição {i+1})", ("<=",">="), key=f"sinal_{i}")
-    restricao.append(sinal) #Adiciona o sinal da restrição
-    restricao.append(limite)  #Adiciona o limite como última coluna
+    sinal = st.sidebar.selectbox(
+        f"Sinal (Restrição {i+1})", ("<=", ">="), key=f"sinal_{i}"
+    )
+    restricao.append(sinal)  # Adiciona o sinal da restrição
+    restricao.append(limite)  # Adiciona o limite como última coluna
     restricoes.append(restricao)
 
-#Exibição de Dados
+# Exibição de Dados
 st.header("Função Objetivo")
 
 previous_psombras = []
@@ -69,31 +81,44 @@ with st.expander("Propor Alterações", expanded=False):
         viavel, restricoes_inviaveis = verify_viability(restricoes)
         if viavel:
             result = pLinear(int(num_variaveis), coeficientes_fo, restricoes)
-            new_psombras = [preco for preco in result[2]]  # Lista de preços sombra após alterações
-            
+            new_psombras = [
+                preco for preco in result[2]
+            ]  # Lista de preços sombra após alterações
+
             # Verificar se previous_psombras está preenchido
             if st.session_state.previous_psombras:
-                if all(new_psombras[i] == st.session_state.previous_psombras[i] for i in range(len(new_psombras))):
+                if all(
+                    new_psombras[i] == st.session_state.previous_psombras[i]
+                    for i in range(len(new_psombras))
+                ):
                     st.success("As alterações propostas são viáveis")
                     st.write(f"Lucro Ótimo (Z) = {result[1]} reais")
                 else:
-                    st.error("As alterações propostas não são viáveis. Preços sombra foram alterados.")
+                    st.error(
+                        "As alterações propostas não são viáveis. Preços sombra foram alterados."
+                    )
             else:
-                st.warning("Os preços sombra originais ainda não foram calculados. Por favor, calcule a solução inicial.")
+                st.warning(
+                    "Os preços sombra originais ainda não foram calculados. Por favor, calcule a solução inicial."
+                )
         else:
             if len(restricoes_inviaveis) == 1:
                 st.error(f"Restrição inviável: {restricoes_inviaveis[0]}")
             else:
-                st.error(f"Restrições inviáveis: {', '.join(map(str, restricoes_inviaveis))}")
+                st.error(
+                    f"Restrições inviáveis: {', '.join(map(str, restricoes_inviaveis))}"
+                )
 
 
 for i, restricao in enumerate(restricoes):
-    coef = restricao[:-2]  #Exclui o limite e o sinal para montar a inequação
+    coef = restricao[:-2]  # Exclui o limite e o sinal para montar a inequação
     limite = restricao[-1]
     sinal = restricao[-2]
     if all([c == 0 for c in coef]):
         continue
-    restricao_str = " + ".join([f"{coef[j]} X{j+1}" for j in range(len(coef)) if coef[j] != 0])
+    restricao_str = " + ".join(
+        [f"{coef[j]} X{j+1}" for j in range(len(coef)) if coef[j] != 0]
+    )
     st.write(f"{restricao_str} {sinal} {limite}")
 
 string = ""
@@ -103,7 +128,7 @@ string = string[:-2]
 string += " >=0"
 st.write(string)
 
-#Botão para calcular a solução
+# Botão para calcular a solução
 if st.button("Calcular Solução"):
     nvar = int(num_variaveis)
     f_obj = coeficientes_fo
