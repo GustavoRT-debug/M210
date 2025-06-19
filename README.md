@@ -72,7 +72,6 @@ A aplicação será aberta automaticamente no seu navegador padrão.
 solvex-simplex/
 ├── main.py                   # Arquivo principal com a interface Streamlit
 ├── functions.py              # Funções auxiliares (Simplex, criação da tabela etc.)
-├── logo.jpg                  # Imagem do logo (opcional)
 ├── requirements.txt          # Lista de dependências
 └── README.md                 # Documentação do projeto
 ```
