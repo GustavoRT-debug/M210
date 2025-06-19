@@ -69,7 +69,7 @@ A aplicação será aberta automaticamente no seu navegador padrão.
 ## 📂 Estrutura do Projeto
 
 ```
-solvex-simplex/
+M210/
 ├── main.py                   # Arquivo principal com a interface Streamlit
 ├── functions.py              # Funções auxiliares (Simplex, criação da tabela etc.)
 ├── requirements.txt          # Lista de dependências
