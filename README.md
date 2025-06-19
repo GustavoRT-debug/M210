@@ -126,5 +126,5 @@ Este projeto está licenciado sob a [MIT License](LICENSE).
 
 ---
 
-Desenvolvido com 💻 
-```
+Desenvolvido com 💻 e muita pesquisa sobre o preço sombra 
+
