@@ -127,5 +127,5 @@ Este projeto está licenciado sob a [MIT License](LICENSE).
 
 ---
 
-Desenvolvido com 💻 e ☕ por [Seu Nome ou Equipe].
+Desenvolvido com 💻 
 ```
