@@ -40,6 +40,8 @@ with st.sidebar:
     for i in range(num_restricoes):
         st.markdown(f"**Restrição {i+1}**")
         restricao = []
+        
+        # Coeficientes das variáveis (input distribuído em colunas)
         cols = st.columns(num_variaveis)
         for j in range(num_variaveis):
             coef = validate_decimal(
@@ -47,8 +49,14 @@ with st.sidebar:
                 key=f"coef_{i}_{j}",
             )
             restricao.append(coef)
+        
+        # Limite da inequação
         limite = st.number_input(f"Limite (R{i+1})", key=f"limite_{i}")
+
+        # Sinal da inequação
         sinal = st.selectbox(f"Sinal (R{i+1})", ("<=", ">="), key=f"sinal_{i}")
+        
+        # Constroi a matriz restricoes
         restricao += [sinal, limite]
         restricoes.append(restricao)
 
@@ -83,6 +91,8 @@ with tabs[1]:
             # Mostra os valores otimos encontrados
             for i, val in enumerate(result[0]):
                 st.write(f"**X{i+1} = {val}**")
+            
+            # Mostra o lucro maximo
             st.markdown(f"### Lucro Máximo (Z): `{result[1]}`")
 
             st.subheader("Preços Sombra")
